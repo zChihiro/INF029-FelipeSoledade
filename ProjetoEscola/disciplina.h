@@ -1,17 +1,14 @@
 #ifndef DISCIPLINA_H
 #define DISCIPLINA_H
+#include "use.h"
 
-#define TAM_DISCIPLINA 3
-#define TAM_NOME 50
+
 
 typedef struct {
     int codigo;
-    char nome[TAM_NOME];
+    char nome[TAM_NAME];
     int ativa;
 } Disciplina;
-
-
-
 
 
 

@@ -1,13 +1,18 @@
 #include <stdio.h>
+#include "use.h"
 #include "aluno.h"
+#include "professor.h"
+#include "utilitarios.h"
 
 int menuGeral();
 
 int main(void) {
 
     Aluno lista_aluno[TAM_ALUNO];
+    Professor lista_professor[TAM_PROFESSOR];
     int opcao;
     int qtdAluno = 0;
+    int qtdProfessor = 0;
     int sair = 0;
 
     while(!sair){
@@ -34,8 +39,9 @@ int main(void) {
                             sairAluno = 1;
                             break;
                         }
-                        case 1:{
-                            cadastrarAluno(lista_aluno, &qtdAluno);
+                        case 1:{   
+                            if(cadastrarAluno(lista_aluno, qtdAluno))
+                                qtdAluno++;     
                             break;
                         }
                         case 2:{
@@ -43,12 +49,13 @@ int main(void) {
                             break;
                         }
                         case 3:{
-                            alterarAluno(lista_aluno, &qtdAluno);
+                            atualizarAluno(lista_aluno, qtdAluno);
                             break;
                         }
                         case 4:{
-                            excluirAluno(lista_aluno, &qtdAluno);
-                            break;
+                            if(excluirAluno(lista_aluno, qtdAluno))
+                                qtdAluno--;
+                            break; 
                         }
                         default:{
                             printf("Opção Inválida\n");
@@ -56,10 +63,45 @@ int main(void) {
                         }
                     }
                 }
+                break;
             }
 
             case 2:{
-                printf("Módulo Professor:\n");
+                int sairProfessor = 0;
+                int opcaoProfessor = 0;
+
+                while(!sairProfessor) {
+                    opcaoProfessor = menuProfessor();
+                    printf("\n");
+                    switch(opcaoProfessor) {
+                        case 0:{
+                            sairProfessor = 1;
+                            break;
+                        }
+                        case 1:{
+                            if(cadastrarProfessor(lista_professor, qtdProfessor))
+                            qtdProfessor++;
+                            break;
+                        }
+                        case 2:{
+                            listarProfessores(lista_professor, qtdProfessor);
+                            break;
+                        }
+                        case 3:{
+                            atualizarProfessor(lista_professor, qtdProfessor);
+                            break;
+                        }
+                        case 4:{
+                            if(excluirProfessor(lista_professor, qtdProfessor))
+                            qtdProfessor--;
+                            break;
+                        }
+                        default:{
+                            printf("Opcao Invalida");
+                            break;
+                        }
+                    }
+                }
                 break;
             }
 
@@ -77,6 +119,9 @@ int main(void) {
     }
 }
 
+
+//Função única do escola.c Menu Geral!
+
 int menuGeral(){
     int opcao;
     printf("======== Projeto Escola ========\n\n");
@@ -85,7 +130,7 @@ int menuGeral(){
         printf("1 - Aluno\n");
         printf("2 - Professor\n");
         printf("3 - Discisplina\n");
-        printf("Digite a sua opção: ");
+        printf("Digite a sua opcao: ");
         scanf("%d", &opcao);
         
         return opcao;

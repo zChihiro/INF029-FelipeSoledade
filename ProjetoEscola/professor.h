@@ -1,12 +1,21 @@
 #ifndef PROFESSOR_H
 #define PROFESSOR_H
+#include "use.h"
 
-#define TAM_PROFESSOR 3
 
 typedef struct { 
-    int registro;
+    int matricula;
+    char name[TAM_NAME];
+    char cpf[TAM_CPF];
+    Data date_birth;
     char sexo;
     int ativo;
 } Professor;
+
+int menuProfessor();
+int cadastrarProfessor(Professor lista_professor[], int qtdProfessor);
+void listarProfessores(Professor lista_professor[], int qtdProfessor);
+void atualizarProfessor(Professor lista_professor[], int qtdProfessor);
+int excluirProfessor(Professor lista_professor[], int qtdProfessor);
 
 #endif // PROFESSOR_H
