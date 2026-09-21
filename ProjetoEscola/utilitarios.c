@@ -2,8 +2,48 @@
 #include <string.h>
 #include <ctype.h>
 #include "use.h"
-#include "aluno.h"
 #include "utilitarios.h"
+
+//Funções Globais..
+void limpar_buffer() {
+    int c = getchar();
+
+    while (c != '\n' && c != EOF) {
+        c = getchar();
+    }
+}
+
+int ler_int(int *n) {
+    if (scanf("%d", n) != 1) {
+        limpar_buffer();
+        return 0;
+    }
+
+    if (getchar() != '\n') {
+        limpar_buffer();
+        return 0;
+    }
+
+    return 1;
+}
+
+void name_read(char *texto) {
+    scanf(" %[^\n]", texto);
+}
+
+void caracter_read(char *texto) {
+    scanf(" %c%*[^\n]", texto);
+}
+
+int invalid_id(int x) {
+    if(x < 0){
+        printf("Matricula Invalida\n");
+        return 0;
+    }
+    return 1;
+}
+
+//Função Para Aluno, pq não serve ? pq eu passo o vetor aluno e não professor.
 
 int Checklist_Aluno(Aluno lista_aluno[], int qtdAluno, int x){
     
@@ -24,6 +64,7 @@ int search_id(Aluno lista_aluno[], int qtdAluno, int x){
     return -1;
 }
 
+//Função Professor.
 int Checklist_Professor(Professor lista_professor[], int qtdProfessor, int x){
     for(int i = 0; i < qtdProfessor; i++) {
         if(lista_professor[i].matricula == x) {
@@ -43,13 +84,7 @@ int search_id_professor(Professor lista_professor[], int qtdProfessor, int x){
 }
 
 
-int invalid_id(int x) {
-    if(x < 0){
-        printf("Matricula Invalida\n");
-        return 0;
-    }
-    return 1;
-}
+//Verificações Especificas.
 
 int Verify_Date(Data d) {
     int achou = 0;
@@ -103,14 +138,6 @@ void new_format(char name[]) {
             name[i] = tolower(name[i]); 
         }
     }
-}
-
-void name_read(char *texto) {
-    scanf(" %[^\n]", texto);
-}
-
-void caracter_read(char *texto) {
-    scanf(" %c%*[^\n]", texto);
 }
 
 char valid_sex() {

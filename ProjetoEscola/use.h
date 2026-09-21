@@ -11,6 +11,7 @@ typedef struct Data {
 //All in One
 #define TAM_NAME 99
 #define TAM_CPF 12
+#define MAX_ALUNO 40
 
 //returns.
 

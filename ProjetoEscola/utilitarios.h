@@ -18,6 +18,7 @@ char valid_sex();
 void name_read(char *texto);
 void caracter_read(char *texto);
 void new_format(char name[]);
-
+void limpar_buffer();
+int ler_int(int *n);
 
 #endif

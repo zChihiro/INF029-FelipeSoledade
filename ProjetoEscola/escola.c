@@ -2,6 +2,7 @@
 #include "use.h"
 #include "aluno.h"
 #include "professor.h"
+#include "disciplina.h"
 #include "utilitarios.h"
 
 int menuGeral();
@@ -10,9 +11,12 @@ int main(void) {
 
     Aluno lista_aluno[TAM_ALUNO];
     Professor lista_professor[TAM_PROFESSOR];
+    Disciplina lista_disciplina[TAM_DISCIPLINA];
+
     int opcao;
     int qtdAluno = 0;
     int qtdProfessor = 0;
+    int qtdDisciplina = 0;
     int sair = 0;
 
     while(!sair){
@@ -106,7 +110,28 @@ int main(void) {
             }
 
             case 3:{
-                printf("Módulo Disciplina:\n");
+                int sairDisciplina = 0;
+                int opcaoDisciplina = 0;
+
+                while(!sairDisciplina) {
+                    opcaoDisciplina = menuDisciplina();
+
+                    switch(opcaoDisciplina) {
+                        case 0: {
+                            sairDisciplina = 1;
+                            break;
+                        }
+                        case 1: {
+                            if(cadastrarDisciplina(lista_disciplina, lista_professor, qtdDisciplina, qtdProfessor))
+                            qtdDisciplina++;
+                            break;
+                        }
+                        case 2: {
+                            listarDisciplinas(lista_disciplina, qtdDisciplina);
+                            break;
+                        }
+                    }
+                }
                 break;
             }
 
