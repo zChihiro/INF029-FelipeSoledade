@@ -15,6 +15,9 @@ typedef struct {
 int menuProfessor();
 int cadastrarProfessor(Professor lista_professor[], int qtdProfessor);
 void listarProfessores(Professor lista_professor[], int qtdProfessor);
+void listarProfessoresSexo(Professor lista_professor[], int qtdProfessor);
+void listarProfessoresName(Professor *lista_professor, int qtdProfessor);
+void listarProfessoresData(Professor *lista_professor, int qtdProfessor);
 void atualizarProfessor(Professor lista_professor[], int qtdProfessor);
 int excluirProfessor(Professor lista_professor[], int qtdProfessor);
 

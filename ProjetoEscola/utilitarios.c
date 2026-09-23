@@ -43,7 +43,8 @@ int invalid_id(int x) {
     return 1;
 }
 
-//Função Para Aluno, pq não serve ? pq eu passo o vetor aluno e não professor.
+//Função Para Aluno, pq não serve para todos os casos ? pq eu passo o vetor aluno e não professor.
+//========================================================================================================
 
 int Checklist_Aluno(Aluno lista_aluno[], int qtdAluno, int x){
     
@@ -64,7 +65,48 @@ int search_id(Aluno lista_aluno[], int qtdAluno, int x){
     return -1;
 }
 
+int comparaNomes(char *nome1, char *nome2) {
+    int i = 0;
+    while(nome1[i] != '\0' && nome2[i] != '\0' && nome1[i] == nome2[i]) {
+        i++;
+    }
+    return nome1[i] - nome2[i];
+}
+
+int comparaData(Data data1, Data data2) {
+    if(data1.ano != data2.ano) return data1.ano - data2.ano;
+    if(data1.mes != data2.mes) return data1.mes - data2.mes;
+    return data1.dia - data2.dia;
+}
+
+void ordenarAlunosPorNome(Aluno vetor[], int qtdAluno) {
+    for(int i = 0; i < qtdAluno - 1; i++) {
+        for(int j = 0; j < qtdAluno - 1 - i; j++) {
+            if(comparaNomes(vetor[j].name, vetor[j+1].name) > 0) {
+                Aluno temp = vetor[j];
+                vetor[j] = vetor[j+1];
+                vetor[j+1] = temp;
+            }
+        }
+    }
+}
+
+void ordenarAlunosPorData(Aluno vetor[], int qtdAluno) {
+    for(int i = 0; i < qtdAluno - 1; i++) {
+        for(int j = 0; j < qtdAluno - 1 - i; j++) {
+            if(comparaData(vetor[j].date_birth, vetor[j+1].date_birth) > 0) {
+                Aluno temp = vetor[j];
+                vetor[j] = vetor[j+1];
+                vetor[j+1] = temp;
+            }
+        }
+    }
+}
+//==============================================================================================
+
+
 //Função Professor.
+//==============================================================================================
 int Checklist_Professor(Professor lista_professor[], int qtdProfessor, int x){
     for(int i = 0; i < qtdProfessor; i++) {
         if(lista_professor[i].matricula == x) {
@@ -83,7 +125,49 @@ int search_id_professor(Professor lista_professor[], int qtdProfessor, int x){
     return -1;
 }
 
+void ordenarProfessoresPorNome(Professor vetor[], int qtdProfessor) {
+    for(int i = 0; i < qtdProfessor - 1; i++) {
+        for(int j = 0; j < qtdProfessor - 1 - i; j++) {
+            if(comparaNomes(vetor[j].name, vetor[j+1].name) > 0) {
+                Professor temp = vetor[j];
+                vetor[j] = vetor[j+1];
+                vetor[j+1] = temp;
+            }
+        }
+    }
+}
 
+void ordenarProfessoresPorData(Professor vetor[], int qtdProfessor) {
+    for(int i = 0; i < qtdProfessor - 1; i++) {
+        for(int j = 0; j < qtdProfessor - 1 - i; j++) {
+            if(comparaData(vetor[j].date_birth, vetor[j+1].date_birth) > 0) {
+                Professor temp = vetor[j];
+                vetor[j] = vetor[j+1];
+                vetor[j+1] = temp;
+            }
+        }
+    }
+}
+
+//=================================================================================================
+
+
+//Disciplina
+//===================================================================================================
+int search_id_disciplina(Disciplina lista_disciplina[], int qtdDisciplina, int x){
+    for(int i = 0; i < qtdDisciplina; i++) {
+        if(lista_disciplina[i].id == x) {
+           return i;
+        }
+    }
+    return -1;
+}
+
+
+
+//Refazer os search passando parametros de *
+//
+//
 //Verificações Especificas.
 
 int Verify_Date(Data d) {
@@ -119,7 +203,7 @@ int valid_cpf(char *cpf) {
         if(cpf[i] < '0' || cpf[i] > '9')
         return 0;
     }
-    
+        
     return 1; 
 }
  
@@ -147,8 +231,9 @@ char valid_sex() {
         caracter_read(&sexo);
         sexo = toupper(sexo);
         
-        if(sexo != 'M' && sexo != 'F') 
+        if(sexo != 'M' && sexo != 'F') {
         printf("Caracter invalido. Tente novamente.\n");
+        }
     } while(sexo != 'M' && sexo != 'F');
 
     return sexo;

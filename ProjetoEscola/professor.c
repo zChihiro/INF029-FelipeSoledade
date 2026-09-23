@@ -13,8 +13,11 @@ int menuProfessor() {
     printf("0 - Sair\n");
     printf("1 - Cadastrar Professor\n");
     printf("2 - Listar Professores\n");
-    printf("3 - Alterar Professor\n");
-    printf("4 - Excluir Professor\n");
+    printf("3 - Listar Professores Sexo\n");
+    printf("4 - Listar Professores Nome\n");
+    printf("5 - Listar Professores Data\n");
+    printf("6 - Alterar Professor\n");
+    printf("7 - Excluir Professor\n");
     printf("Digite a sua opcao: ");
     scanf("%d", &opcaoProfessor);
 
@@ -76,7 +79,7 @@ int cadastrarProfessor(Professor lista_professor[], int qtdProfessor) {
 void listarProfessores(Professor lista_professor[], int qtdProfessor) {
 
     if(qtdProfessor == 0){
-        printf("Lista de professores vazia. Cadastre Professores para testes!\n");
+        printf("Lista de professores vazia. Cadastre Professores para testes!\n\n");
     }else {
         for(int i = 0; i < qtdProfessor; i++) {
             if (lista_professor[i].ativo == 1) {
@@ -103,12 +106,106 @@ void listarProfessores(Professor lista_professor[], int qtdProfessor) {
     }
 }
 
+void listarProfessoresSexo(Professor lista_professor[], int qtdProfessor) {
+
+    if(qtdProfessor == 0) {
+        printf("Nao ha professores cadastrados\n\n");
+        return;
+    }
+
+    char sexo;
+    sexo = valid_sex();
+
+    for(int i = 0; i < qtdProfessor; i++) {
+        if(lista_professor[i].sexo == sexo)
+            printf(" **Sexo: %c, **Nome: %s\n", lista_professor[i].sexo, lista_professor[i].name);
+    }
+    printf("\n");
+
+    int retorno;
+    do{
+        printf("Digite 1 para retornar: ");
+        scanf("%d", &retorno);
+        if(retorno != 1){
+            printf("Numero inválido.\n\n");
+            retorno = 0;
+        }
+    } while(!retorno);
+    return;
+}
+
+void listarProfessoresName(Professor *lista_professor, int qtdProfessor) {
+
+    if(qtdProfessor == 0) {
+        printf("Nao ha professores cadastrados\n\n");
+        return;
+    }
+
+    Professor copia_vetor[TAM_PROFESSOR];
+
+    for(int i = 0; i < qtdProfessor; i++) {
+        copia_vetor[i] = lista_professor[i];
+    }
+
+    ordenarProfessoresPorNome(copia_vetor, qtdProfessor);
+
+    for(int i = 0; i < qtdProfessor; i++) {
+        printf(" ** Name %s\n", copia_vetor[i].name);
+        printf("------------------------------------------\n");
+    }
+
+    int retorno;
+    do{
+        printf("Digite 1 para retornar: ");
+        scanf("%d", &retorno);
+        if(retorno != 1){
+            printf("Numero inválido.\n\n");
+            retorno = 0;
+        }
+    } while(!retorno);
+    return;
+}
+
+void listarProfessoresData(Professor *lista_professor, int qtdProfessor) {
+
+    if(qtdProfessor == 0) {
+        printf("Nao ha professores cadastrados\n\n");
+        return;
+    }
+
+    Professor copia_vetor[TAM_PROFESSOR];
+
+    for(int i = 0; i < qtdProfessor; i++) {
+        copia_vetor[i] = lista_professor[i];
+    }
+
+    ordenarProfessoresPorData(copia_vetor, qtdProfessor);
+
+    for(int i = 0; i < qtdProfessor; i++) {
+        printf(" **Data: %02d/%02d/%d\n", 
+                copia_vetor[i].date_birth.dia, 
+                copia_vetor[i].date_birth.mes, 
+                copia_vetor[i].date_birth.ano);
+    }
+
+    int retorno;
+    do{
+        printf("Digite 1 para retornar: ");
+        scanf("%d", &retorno);
+        if(retorno != 1){
+            printf("Numero inválido.\n\n");
+            retorno = 0;
+        }
+    } while(!retorno);
+    return;
+}
+
 void atualizarProfessor(Professor lista_professor[], int qtdProfessor){
 
     int matricula;
 
     if(qtdProfessor == 0) {
-       printf("Nao ha professores cadastrados\n");
+       printf("Nao ha professores cadastrados\n\n");
     } else {
         printf("Digite a matricula: ");
         scanf("%d", &matricula);
@@ -156,7 +253,7 @@ void atualizarProfessor(Professor lista_professor[], int qtdProfessor){
 int excluirProfessor(Professor lista_professor[], int qtdProfessor){
 
     if(qtdProfessor == 0) {
-        printf("Sem professores cadastrados no sistema\n");
+        printf("Sem professores cadastrados no sistema\n\n");
         return 0;
     }
     else {

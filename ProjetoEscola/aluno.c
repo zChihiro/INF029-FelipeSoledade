@@ -14,8 +14,11 @@ int menuAluno() {
     printf("0 - Sair\n");
     printf("1 - Cadastrar Aluno\n");
     printf("2 - Listar Alunos\n");
-    printf("3 - Alterar Aluno\n");
-    printf("4 - Excluir Aluno\n");
+    printf("3 - Listar Alunos Sexo\n"); 
+    printf("4 - Listar Alunos Name\n"); 
+    printf("5 - Listar Alunos Data\n"); 
+    printf("6 - Alterar Aluno\n");
+    printf("7 - Excluir Aluno\n");
     printf("Digite a sua opcao: ");
     scanf("%d", &opcaoAluno);
 
@@ -77,7 +80,7 @@ int cadastrarAluno(Aluno lista_aluno[], int qtdAluno) {
 void listarAlunos(Aluno lista_aluno[], int qtdAluno) {
 
     if(qtdAluno == 0){
-        printf("Lista de alunos vazia. Cadastre Alunos para testes!");
+        printf("Lista de alunos vazia. Cadastre Alunos para testes!\n\n");
     }else {
         for(int i = 0; i < qtdAluno; i++) {
             if (lista_aluno[i].ativo == 1) {
@@ -102,6 +105,101 @@ void listarAlunos(Aluno lista_aluno[], int qtdAluno) {
         } while(!retorno);
             return;
     }
+}
+
+void listarAlunosSexo(Aluno lista_aluno[], int qtdAluno) {
+
+    if(qtdAluno == 0) {
+    printf("Nao ha alunos matriculados.\n\n");
+    return;
+    }
+    char sexo;
+    
+    sexo = valid_sex();
+    
+        for(int i = 0; i < qtdAluno; i++) {
+            if(lista_aluno[i].sexo == sexo)
+            printf(" **Sexo: %c, **Nome: %s\n", lista_aluno[i].sexo, lista_aluno[i].name);
+        }
+        printf("\n");
+
+        int retorno;
+        do{
+        printf("Digite 1 para retornar: ");
+        scanf("%d", &retorno);
+        if(retorno != 1){
+            printf("Numero inválido.\n\n");
+            retorno = 0;
+        }
+        } while(!retorno);
+        return;  
+}
+
+void listarAlunosName(Aluno *lista_aluno, int qtdAluno) {
+
+    if(qtdAluno == 0) {
+        printf("Nao ha alunos matriculados.\n\n");
+        return;
+    }
+
+    Aluno copia_vetor[TAM_ALUNO];
+
+    for(int i = 0; i < qtdAluno; i++) {
+        copia_vetor[i] = lista_aluno[i];
+    }
+
+    ordenarAlunosPorNome(copia_vetor, qtdAluno);
+
+    for(int i = 0; i < qtdAluno; i++) {
+        printf(" ** Name %s\n", copia_vetor[i].name);
+        printf("------------------------------------------\n");
+    }
+
+    int retorno;
+    do{
+        printf("Digite 1 para retornar: ");
+        scanf("%d", &retorno);
+        if(retorno != 1){
+            printf("Numero inválido.\n\n");
+            retorno = 0;
+        }
+    } while(!retorno);
+    return;
+
+}
+
+void listarAlunosData(Aluno *lista_aluno, int qtdAluno) {
+
+     if(qtdAluno == 0) {
+        printf("Nao ha alunos matriculados.\n\n");
+        return;
+    }
+
+    Aluno copia_vetor[TAM_ALUNO];
+
+    for(int i = 0; i < qtdAluno; i++) {
+        copia_vetor[i] = lista_aluno[i];
+    }
+
+    ordenarAlunosPorData(copia_vetor, qtdAluno);
+
+    for(int i = 0; i < qtdAluno; i++) {
+        printf(" **Data: %02d/%02d/%d\n", 
+            copia_vetor[i].date_birth.dia,
+            copia_vetor[i].date_birth.mes,
+            copia_vetor[i].date_birth.ano);
+    }
+
+    int retorno;
+    do{
+        printf("Digite 1 para retornar: ");
+        scanf("%d", &retorno);
+        if(retorno != 1){
+            printf("Numero inválido.\n\n");
+            retorno = 0;
+        }
+    } while(!retorno);
+    return;
 }    
 
 void atualizarAluno(Aluno lista_aluno[], int qtdAluno){
@@ -109,7 +207,8 @@ void atualizarAluno(Aluno lista_aluno[], int qtdAluno){
     int matricula;
     
     if(qtdAluno == 0) {
-       printf("Nao ha alunos matriculados\n");
+       printf("Nao ha alunos matriculados\n\n");
+       return;
     } else {
         printf("Digite a matricula: ");
         scanf("%d", &matricula);
@@ -158,7 +257,7 @@ void atualizarAluno(Aluno lista_aluno[], int qtdAluno){
 int excluirAluno(Aluno lista_aluno[], int qtdAluno){
 
     if(qtdAluno == 0) {
-        printf("Sem alunos cadastrados no sistema");
+        printf("Sem alunos cadastrados no sistema.\n\n");
         return 0;
     }
     else {
