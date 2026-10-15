@@ -321,47 +321,30 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias = 0;
-    int tam = 0;
-    int temp1 = numerobase;
-    int modulo_busca = numerobusca;
-    int modulo_base = numerobase;
-    int temp2 = modulo_busca;
-    
-    while(modulo_busca != 0) {
-        tam++;
-        modulo_busca /= 10;
+    int qtdDigitos = 0, divisor = 1, aux = numerobusca, qtd = 0;
+
+    if (aux == 0)
+        qtdDigitos = 1;
+    while (aux > 0)
+    {
+        qtdDigitos++;
+        aux = aux / 10;
     }
-    
-    int validar_tam = 0;
-    while(numerobase != 0) {
-        modulo_busca = numerobusca;
-        modulo_base = numerobase;
-        temp2 = modulo_busca;
-        temp1 %= 10;
-        temp2 %= 10;
-        if(temp2 == temp1) {
-            validar_tam = 0;
-            while(modulo_busca != 0) {
-                temp2 = modulo_busca;
-                temp1 = modulo_base;
-                if(temp2 % 10 != temp1 % 10) {
-                break;
-                }
-                validar_tam++;
 
-                if(validar_tam == tam) {
-                qtdOcorrencias++;
-                }
-                modulo_base /= 10;
-                modulo_busca /= 10;
-            }
+    for (aux = 0; aux < qtdDigitos; aux++)
+        divisor = divisor * 10;
+
+    while (numerobase > 0)
+    {
+        if (numerobase % divisor == numerobusca)
+        {
+            qtd++;
+            numerobase = numerobase / divisor;
         }
-        numerobase /= 10;
-        temp1 = numerobase;
-    }    
-
-    return qtdOcorrencias;
+        else
+            numerobase = numerobase / 10;
+    }
+    return qtd;
 }
 
 /*
