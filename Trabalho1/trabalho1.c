@@ -138,7 +138,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
 
     //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
-
+ 
     if (q1(datainicial) == 0){
       dma.retorno = 2;
       return dma;
@@ -148,21 +148,24 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     }else{
         DataQuebrada ini = quebraData(datainicial);
         DataQuebrada fim = quebraData(datafinal);
-
+ 
         int numIni = ini.iAno * 10000 + ini.iMes * 100 + ini.iDia;
         int numFim = fim.iAno * 10000 + fim.iMes * 100 + fim.iDia;
-
+ 
         if( numIni > numFim) {
             dma.retorno = 4;
             return dma;
         }
-
+ 
         int day_mes[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
+ 
+        if(ini.iDia == 29 && ini.iMes == 2 && fim.iDia == 28 && fim.iMes == 2 && !eh_bissexto(fim.iAno))
+            fim.iDia = 29;
+ 
         int dias = fim.iDia - ini.iDia;
         int mes = fim.iMes - ini.iMes;
         int ano = fim.iAno - ini.iAno;
-
+ 
         
         if (dias < 0) {
         int mesEmprestimo = fim.iMes - 1;
@@ -175,11 +178,11 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
             if(mesEmprestimo == 2 && eh_bissexto(fim.iAno)){
                 diasEmprestimo = 29;
             }
-
+ 
         dias = diasEmprestimo + dias;
         mes--;
         }
-
+ 
         if(mes < 0) {
             ano--;
             mes+= 12;
@@ -190,15 +193,16 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
         dma.qtdAnos = ano;
         dma.retorno = 1;
         return dma;
-
+ 
         
         
         //verifique se a data final não é menor que a data inicial
       
         //calcule a distancia entre as datas
-
+ 
         //se tudo der certo
     }
+    
     
 }
 
@@ -418,17 +422,7 @@ DataQuebrada quebraData(char data[]){
 	char sMes[3];
 	char sAno[5];
 	int i; 
-    int contar = 0;
-
-    for(i = 0; data[i] != '\0'; i++){
-        if(data[i] == '/')
-        contar++;
-    }
-
-    if(contar != 2) {
-        dq.valido = 0;
-        return dq;
-    } 
+    
 
 	for (i = 0; data[i] != '/'; i++){
 		sDia[i] = data[i];	
