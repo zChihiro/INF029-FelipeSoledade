@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de Livros</title>
+<style>
+  :root {
+    --fundo: #f4f5f7; --cartao: #ffffff; --texto: #1c1f24; --suave: #5f6670;
+    --borda: #d9dce1; --destaque: #2f5bea; --destaque-texto: #ffffff;
+    --linha-alt: #f0f2f5; --erro: #c0392b; --ok: #1e7d46;
+  }
+  :root:not([data-tema="claro"]) { color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --fundo: #14171b; --cartao: #1d2127; --texto: #e8eaed; --suave: #9aa1ab;
+      --borda: #353b44; --destaque: #6c8cff; --destaque-texto: #101319;
+      --linha-alt: #232830; --erro: #ff7b6b; --ok: #5fd08a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 16px; background: var(--fundo); color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  main { max-width: 640px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  .sub { color: var(--suave); margin: 0 0 20px; font-size: .95rem; }
+  .cartao {
+    background: var(--cartao); border: 1px solid var(--borda);
+    border-radius: 12px; padding: 16px; margin-bottom: 14px;
+  }
+  h2 { font-size: 1rem; margin: 0 0 12px; }
+  .linha { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+  label { display: block; font-size: .85rem; color: var(--suave); margin-bottom: 4px; }
+  input[type="text"] {
+    width: 100%; padding: 9px 10px; font-size: 1rem; color: var(--texto);
+    background: var(--fundo); border: 1px solid var(--borda); border-radius: 8px;
+  }
+  input[type="text"]:focus-visible, button:focus-visible, .opcao input:focus-visible + span {
+    outline: 2px solid var(--destaque); outline-offset: 2px;
+  }
+  .campo-nome { flex: 1 1 220px; }
+  .campo-preco { flex: 0 0 130px; }
+  button {
+    padding: 10px 18px; font-size: 1rem; font-weight: 600; cursor: pointer;
+    color: var(--destaque-texto); background: var(--destaque);
+    border: none; border-radius: 8px;
+  }
+  button:hover { filter: brightness(1.08); }
+  fieldset { border: none; padding: 0; margin: 0; }
+  legend { font-size: .85rem; color: var(--suave); margin-bottom: 6px; padding: 0; }
+  .grupo { display: inline-flex; border: 1px solid var(--borda); border-radius: 8px; overflow: hidden; }
+  .opcao { position: relative; }
+  .opcao input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .opcao span { display: block; padding: 8px 14px; cursor: pointer; }
+  .opcao input:checked + span { background: var(--destaque); color: var(--destaque-texto); font-weight: 600; }
+  .opcoes { display: flex; gap: 20px; flex-wrap: wrap; align-items: end; }
+  .opcoes button { margin-left: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 9px 10px; }
+  th { font-size: .85rem; color: var(--suave); border-bottom: 1px solid var(--borda); }
+  td.preco, th.preco { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:nth-child(even) { background: var(--linha-alt); }
+  .vazio { color: var(--suave); text-align: center; padding: 18px 0; }
+  #status { min-height: 1.4em; margin: 6px 2px 0; font-size: .95rem; color: var(--suave); }
+  #status.ok { color: var(--ok); }
+  #status.erro { color: var(--erro); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Catálogo de Livros</h1>
+  <p class="sub">A ordenação é feita pelo programa em C. Esta página só pede e mostra.</p>
+
+  <section class="cartao">
+    <h2>Cadastrar livro</h2>
+    <div class="linha">
+      <div class="campo-nome">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" maxlength="49" autocomplete="off">
+      </div>
+      <div class="campo-preco">
+        <label for="preco">Preço (R$)</label>
+        <input type="text" id="preco" inputmode="decimal" autocomplete="off" placeholder="29,90">
+      </div>
+      <button type="button" id="btn-cadastrar">Cadastrar</button>
+    </div>
+  </section>
+
+  <section class="cartao">
+    <h2>Ordenar catálogo</h2>
+    <div class="opcoes">
+      <fieldset>
+        <legend>Critério</legend>
+        <div class="grupo">
+          <label class="opcao"><input type="radio" name="criterio" value="nome" checked><span>Nome</span></label>
+          <label class="opcao"><input type="radio" name="criterio" value="preco"><span>Preço</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Ordem</legend>
+        <div class="grupo">
+          <label class="opcao"><input type="radio" name="ordem" value="crescente" checked><span>Crescente</span></label>
+          <label class="opcao"><input type="radio" name="ordem" value="decrescente"><span>Decrescente</span></label>
+        </div>
+      </fieldset>
+      <button type="button" id="btn-ordenar">Ordenar</button>
+    </div>
+  </section>
+
+  <section class="cartao">
+    <table>
+      <thead><tr><th>Nome</th><th class="preco">Preço</th></tr></thead>
+      <tbody id="corpo"><tr><td colspan="2" class="vazio">Nenhum livro cadastrado ainda.</td></tr></tbody>
+    </table>
+  </section>
+  <p id="status" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const moeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+  function avisar(texto, tipo) {
+    const el = $("status");
+    el.textContent = texto;
+    el.className = tipo || "";
+  }
+
+  function desenharTabela(livros) {
+    const corpo = $("corpo");
+    corpo.replaceChildren();
+    if (livros.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 2; td.className = "vazio"; td.textContent = "Nenhum livro cadastrado ainda.";
+      tr.appendChild(td); corpo.appendChild(tr);
+      return;
+    }
+    for (const livro of livros) {
+      const tr = document.createElement("tr");
+      const tdNome = document.createElement("td");
+      const tdPreco = document.createElement("td");
+      tdNome.textContent = livro.nome;             // textContent: nada digitado vira HTML
+      tdPreco.className = "preco";
+      tdPreco.textContent = moeda.format(livro.preco);
+      tr.append(tdNome, tdPreco);
+      corpo.appendChild(tr);
+    }
+  }
+
+  async function ordenar(silencioso) {
+    const criterio = document.querySelector('input[name="criterio"]:checked').value;
+    const ordem = document.querySelector('input[name="ordem"]:checked').value;
+    try {
+      const resposta = await fetch(`/api/ordenar?criterio=${criterio}&ordem=${ordem}`);
+      const dados = await resposta.json();
+      if (!resposta.ok) throw new Error(dados.erro);
+      desenharTabela(dados.livros);
+      if (!silencioso) {
+        const por = criterio === "nome" ? "nome" : "preço";
+        avisar(`${dados.livros.length} livro(s) ordenado(s) por ${por} (${ordem}).`, "ok");
+      }
+    } catch (erro) {
+      avisar("Erro: " + erro.message, "erro");
+    }
+  }
+
+  async function cadastrar() {
+    const nome = $("nome").value.trim();
+    const textoPreco = $("preco").value.trim().replace(",", ".");
+    const preco = Number(textoPreco);
+
+    if (nome === "") { avisar("Digite o nome do livro.", "erro"); $("nome").focus(); return; }
+    if (textoPreco === "" || Number.isNaN(preco)) {
+      avisar("Digite um preço válido (ex.: 29,90).", "erro"); $("preco").focus(); return;
+    }
+
+    try {
+      const resposta = await fetch("/api/cadastrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, preco })
+      });
+      const dados = await resposta.json();
+      if (!resposta.ok) throw new Error(dados.erro);
+      $("nome").value = ""; $("preco").value = "";
+      avisar(`Livro cadastrado! Total no catálogo: ${dados.total}`, "ok");
+      $("nome").focus();
+    } catch (erro) {
+      avisar("Erro: " + erro.message, "erro");
+    }
+  }
+
+  $("btn-cadastrar").addEventListener("click", cadastrar);
+  $("btn-ordenar").addEventListener("click", () => ordenar(false));
+  $("preco").addEventListener("keydown", (e) => { if (e.key === "Enter") cadastrar(); });
+  $("nome").addEventListener("keydown", (e) => { if (e.key === "Enter") $("preco").focus(); });
+
+  ordenar(true);   // ao abrir a página, mostra o que o C já tem guardado
+</script>
+</body>
+</html>
